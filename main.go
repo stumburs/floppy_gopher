@@ -15,9 +15,8 @@ func main() {
 	gopher := gopher.NewGopher(50, 50)
 
 	for !rl.WindowShouldClose() {
-
-		dt := rl.GetFrameTime()
 		// Update
+		dt := rl.GetFrameTime()
 		gopher.Update(dt)
 
 		// Draw

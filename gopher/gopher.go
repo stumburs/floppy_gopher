@@ -5,27 +5,34 @@ import (
 )
 
 type Gopher struct {
-	Pos     rl.Vector2
-	Size    rl.Vector2
-	Vel     rl.Vector2
-	Gravity float32
+	pos     rl.Vector2
+	size    rl.Vector2
+	vel     float32
+	gravity float32
+	// maxSpeed float32
 }
 
-func (gopher Gopher) Draw() {
-	rl.DrawRectangleV(gopher.Pos, gopher.Size, rl.Blue)
+func (gopher *Gopher) Draw() {
+	rl.DrawRectangleV(gopher.pos, gopher.size, rl.Blue)
 }
 
-func (gopher Gopher) Update(dt float32) {
-	gopher.Pos.Y -= 100 * dt
-	// TODO
+func (gopher *Gopher) Update(dt float32) {
+
+	gopher.vel += gopher.gravity * dt
+
+	if rl.IsKeyPressed(rl.KeySpace) {
+		gopher.vel = -gopher.gravity * 0.5
+	}
+
+	gopher.pos.Y += gopher.vel * dt
 }
 
 func NewGopher(sizeX, sizeY float32) *Gopher {
 	gopher := Gopher{
-		Pos:     rl.Vector2{X: float32(rl.GetScreenWidth())/2 - sizeX/2, Y: float32(rl.GetScreenHeight())/2 - sizeY/2},
-		Size:    rl.Vector2{X: sizeX, Y: sizeY},
-		Vel:     rl.Vector2Zero(),
-		Gravity: 10,
+		pos:     rl.Vector2{X: float32(rl.GetScreenWidth())/4 - sizeX/2, Y: float32(rl.GetScreenHeight())/2 - sizeY/2},
+		size:    rl.Vector2{X: sizeX, Y: sizeY},
+		vel:     0,
+		gravity: 1000,
 	}
 	return &gopher
 }
