@@ -9,7 +9,6 @@ type Gopher struct {
 	size    rl.Vector2
 	vel     float32
 	gravity float32
-	// maxSpeed float32
 }
 
 func (gopher *Gopher) Draw() {
