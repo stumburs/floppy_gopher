@@ -6,7 +6,7 @@ import (
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"github.com/stumburs/floppy_gopher/gopher"
-	pillarhandler "github.com/stumburs/floppy_gopher/pillar_handler"
+	pillarhandler "github.com/stumburs/floppy_gopher/pillarhandler"
 )
 
 func RunGame() {

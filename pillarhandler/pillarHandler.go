@@ -21,12 +21,6 @@ func (ph *PillarHandler) SpawnPillar() {
 	ph.pillarPairs = append(ph.pillarPairs, RandomPillar())
 }
 
-type pillarPair struct {
-	gapSize  float32
-	posX     int32
-	midpoint int32
-}
-
 type PillarHandler struct {
 	pillarPairs []*pillarPair
 	pillarSpeed float32
@@ -70,12 +64,4 @@ func (ph *PillarHandler) Draw() {
 
 func (ph *PillarHandler) PillarCount() int {
 	return len(ph.pillarPairs)
-}
-
-func RandomPillar() *pillarPair {
-	return &pillarPair{
-		gapSize:  100,
-		posX:     int32(rl.GetScreenWidth()) + 50,
-		midpoint: int32(float32(rl.GetScreenHeight()) / 2),
-	}
 }
