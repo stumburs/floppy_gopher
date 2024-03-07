@@ -1,8 +1,25 @@
 package pillarhandler
 
 import (
+	"time"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
+
+var spawnPillarChan = make(chan struct{})
+
+func StartPillarSpawner(interval time.Duration) {
+	go func() {
+		for {
+			time.Sleep(interval)
+			spawnPillarChan <- struct{}{}
+		}
+	}()
+}
+
+func (ph *PillarHandler) SpawnPillar() {
+	ph.pillarPairs = append(ph.pillarPairs, RandomPillar())
+}
 
 type pillarPair struct {
 	gapSize  float32
@@ -20,19 +37,25 @@ func NewPillarHandler() *PillarHandler {
 		pillarPairs: make([]*pillarPair, 0),
 		pillarSpeed: 200,
 	}
-
-	// Add one random pillar
-	pillarHandler.pillarPairs = append(pillarHandler.pillarPairs, RandomPillar())
-
 	return pillarHandler
 }
 
 // TODO
 func (ph *PillarHandler) Update(dt float32) {
-	//ph.pillarPairs = append(ph.pillarPairs, RandomPillar())
 
-	for _, pillarPair := range ph.pillarPairs {
+	select {
+	case <-spawnPillarChan:
+		ph.SpawnPillar()
+	default:
+	}
+
+	for i := len(ph.pillarPairs) - 1; i >= 0; i-- {
+		pillarPair := ph.pillarPairs[i]
 		pillarPair.posX -= int32(ph.pillarSpeed * dt)
+
+		if pillarPair.posX < -50 {
+			ph.pillarPairs = append(ph.pillarPairs[:i], ph.pillarPairs[i+1:]...)
+		}
 	}
 }
 
